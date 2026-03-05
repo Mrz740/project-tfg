@@ -54,9 +54,30 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(3),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.47, 1, 1.5, 2, 2.25, 2.5, 2.75, 3),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
 "values": [{
+"args": [],
+"method": &"frame_changed"
+}, {
+"args": [],
+"method": &"frame_changed"
+}, {
+"args": [],
+"method": &"frame_changed"
+}, {
+"args": [],
+"method": &"frame_changed"
+}, {
+"args": [],
+"method": &"frame_changed"
+}, {
+"args": [],
+"method": &"frame_changed"
+}, {
+"args": [],
+"method": &"frame_changed"
+}, {
 "args": [],
 "method": &"activate_explosion"
 }]

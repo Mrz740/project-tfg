@@ -55,3 +55,4 @@ func drop_bomb() -> void:
 	bombInst.activate_bomb()
 	bomb_ready = false
 	bombTimer.start()
+	

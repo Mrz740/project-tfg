@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cxn7lkyywjxxe" path="res://Player/player.gd" id="1_3qydi"]
 
 [sub_resource type="Gradient" id="Gradient_3qydi"]
-colors = PackedColorArray(0.89828753, 0.29795095, 0.99999994, 1, 1, 1, 1, 1)
+colors = PackedColorArray(1, 0.35621515, 0.5108003, 1, 1, 1, 1, 1)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_q3lat"]
 gradient = SubResource("Gradient_3qydi")

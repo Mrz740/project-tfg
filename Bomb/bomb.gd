@@ -8,10 +8,13 @@ class_name Bomb
 
 @export var radius : int
 
+	
 func activate_bomb() -> void:
 	animationPlayer.play("bomb_detonation")
 
 func activate_explosion() -> void:
-	var mainLevel : MainLevel = get_parent() as MainLevel
-	mainLevel.destroyTiles(global_position,radius)
+	frame_changed()
 	queue_free()
+
+func frame_changed():
+	FrameDirtyNotifier.emit_signal("frame_dirty")
