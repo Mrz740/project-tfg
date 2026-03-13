@@ -11,6 +11,8 @@ func _ready():
 	serial.set_baud_rate(2000000)
 	serial.open()
 
+
+
 func _process(_delta):
 	var img = get_viewport().get_texture().get_image()
 	img.resize(W, H)
@@ -46,3 +48,7 @@ func _process(_delta):
 
 	# Save current frame as last_frame for next iteration
 	last_frame = data.duplicate()
+	
+func _exit_tree():
+	# send stop command to ESP32
+	serial.write([255, 255, 0, 0, 0])

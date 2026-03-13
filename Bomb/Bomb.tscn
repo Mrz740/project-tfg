@@ -1,51 +1,46 @@
-[gd_scene load_steps=9 format=3 uid="uid://di2h1o61f78dl"]
+[gd_scene load_steps=7 format=3 uid="uid://di2h1o61f78dl"]
 
 [ext_resource type="Script" uid="uid://cnu42alk5l761" path="res://Bomb/bomb.gd" id="1_vlo8u"]
 
-[sub_resource type="Gradient" id="Gradient_svckl"]
+[sub_resource type="Gradient" id="Gradient_vlo8u"]
+offsets = PackedFloat32Array(0.011278195, 1)
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_vlo8u"]
-gradient = SubResource("Gradient_svckl")
-width = 1
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_75bcl"]
+gradient = SubResource("Gradient_vlo8u")
+width = 4
+height = 4
 
 [sub_resource type="Animation" id="Animation_75bcl"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
+tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1.035265),
-"update": 1,
-"values": [SubResource("GradientTexture1D_vlo8u")]
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1.3528494, 1.3528494, 1.3528494, 1)]
 }
-
-[sub_resource type="Gradient" id="Gradient_vlo8u"]
-colors = PackedColorArray(1, 0, 0, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_75bcl"]
-gradient = SubResource("Gradient_vlo8u")
-width = 1
 
 [sub_resource type="Animation" id="Animation_vlo8u"]
 resource_name = "bomb_detonation"
-length = 3.0
+length = 2.0
 step = 3.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath(".:texture")
+tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5, 1, 1.5, 2, 2.25, 2.5, 2.75, 3),
+"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1, 1.1, 1.2, 1.3, 1.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [SubResource("GradientTexture1D_75bcl"), SubResource("GradientTexture1D_vlo8u"), SubResource("GradientTexture1D_75bcl"), SubResource("GradientTexture1D_vlo8u"), SubResource("GradientTexture1D_75bcl"), SubResource("GradientTexture1D_vlo8u"), SubResource("GradientTexture1D_75bcl"), SubResource("GradientTexture1D_vlo8u"), SubResource("GradientTexture1D_75bcl")]
+"values": [Color(1.3528494, 1.3528494, 1.3528494, 1), Color(1.3528494, 0, 0, 1), Color(1.3528494, 1.3528494, 1.3528494, 1), Color(1.3528494, 0, 0, 1), Color(1.3528494, 1.3528494, 1.3528494, 1), Color(1.3528494, 0, 0, 1), Color(1.3528494, 1.3528494, 1.3528494, 1), Color(1.3528494, 0, 0, 1), Color(1.3528494, 1.3528494, 1.3528494, 1)]
 }
 tracks/1/type = "method"
 tracks/1/imported = false
@@ -54,30 +49,9 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0.47, 1, 1.5, 2, 2.25, 2.5, 2.75, 3),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(1.4),
+"transitions": PackedFloat32Array(1),
 "values": [{
-"args": [],
-"method": &"frame_changed"
-}, {
-"args": [],
-"method": &"frame_changed"
-}, {
-"args": [],
-"method": &"frame_changed"
-}, {
-"args": [],
-"method": &"frame_changed"
-}, {
-"args": [],
-"method": &"frame_changed"
-}, {
-"args": [],
-"method": &"frame_changed"
-}, {
-"args": [],
-"method": &"frame_changed"
-}, {
 "args": [],
 "method": &"activate_explosion"
 }]
@@ -92,20 +66,11 @@ _data = {
 [node name="Bomb" type="Sprite2D"]
 modulate = Color(1.3528494, 1.3528494, 1.3528494, 1)
 texture_filter = 1
-texture = SubResource("GradientTexture1D_vlo8u")
+texture = SubResource("GradientTexture2D_75bcl")
 script = ExtResource("1_vlo8u")
-radius = 2
+radius = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_75bcl")
 }
-
-[node name="RayCast2D" type="RayCast2D" parent="."]
-position = Vector2(0, -2)
-target_position = Vector2(0, 3)
-
-[node name="RayCast2D2" type="RayCast2D" parent="."]
-position = Vector2(2, 0)
-rotation = 1.5707964
-target_position = Vector2(0, 3)

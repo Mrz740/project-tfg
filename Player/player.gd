@@ -4,6 +4,7 @@ const UP :Vector2 = Vector2(0,-1)
 const DOWN :Vector2 = Vector2(0,1)
 const LEFT :Vector2 = Vector2(-1,0)
 const RIGHT :Vector2 = Vector2(1,0)
+const SPEED :int = 4
 
 @onready var bombTimer : Timer = $BombCooldown
 @onready var bomb :Resource = preload("res://Bomb/Bomb.tscn")
@@ -16,22 +17,27 @@ func _input(event: InputEvent) -> void:
 	
 	if event.is_action_pressed("move_right"):
 		velocity = RIGHT
+		frame = 1
 	if event.is_action_pressed("move_left"):
 		velocity = LEFT
+		frame = 0
 	if event.is_action_pressed("move_down"):
 		velocity = DOWN
+		frame = 2
 	if event.is_action_pressed("move_up"):
 		velocity = UP
+		frame = 3
 	if velocity != Vector2.ZERO:
 		if check_collision(velocity):
-			position += velocity
+			position += velocity * SPEED
+
 	
 	if event.is_action_pressed("drop_bomb") and bomb_ready:
 		drop_bomb()
 		
 func check_collision(target: Vector2) -> bool:
 	var space_state :PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
-	var query :PhysicsRayQueryParameters2D = PhysicsRayQueryParameters2D.create(global_position, global_position + target)
+	var query :PhysicsRayQueryParameters2D = PhysicsRayQueryParameters2D.create(global_position, global_position + target*SPEED)
 	
 	query.exclude = [$"."]
 	query.set_hit_from_inside(true)
