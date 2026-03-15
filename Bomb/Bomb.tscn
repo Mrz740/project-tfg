@@ -68,7 +68,6 @@ modulate = Color(1.3528494, 1.3528494, 1.3528494, 1)
 texture_filter = 1
 texture = SubResource("GradientTexture2D_75bcl")
 script = ExtResource("1_vlo8u")
-radius = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

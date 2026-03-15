@@ -10,6 +10,7 @@ func _ready():
 	serial.set_port("COM4")
 	serial.set_baud_rate(2000000)
 	serial.open()
+	DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 
 
 
