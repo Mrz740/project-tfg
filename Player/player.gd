@@ -1,109 +1,91 @@
 extends Sprite2D
 
 const TILE_SIZE := 4
-const SPEED := 16
-
+const SPEED := 32
 const UP := Vector2(0,-1)
 const DOWN := Vector2(0,1)
 const LEFT := Vector2(-1,0)
 const RIGHT := Vector2(1,0)
 
-const MOVE_DELAY := 0.08 
-
-@onready var bombTimer : Timer = $BombCooldown
-@onready var bomb :Resource = preload("res://Bomb/Bomb.tscn")
+@onready var bombTimer: Timer = $BombCooldown
+@onready var bomb_scene: PackedScene = preload("res://Bomb/Bomb.tscn")
 
 var moving := false
 var target_position := Vector2.ZERO
-var bomb_ready : bool = true
-
-var hold_time := 0.0
-var current_dir := Vector2.ZERO
-
-
+var bomb_ready := true
+var input_stack := []
 
 func _physics_process(delta):
-
+	update_input_stack()
+	var dir = Vector2.ZERO
+	if input_stack.size() > 0:
+		dir = input_stack[input_stack.size() - 1][1]
 	if moving:
-		position = position.move_toward(target_position, SPEED * delta)
-
-		if position.distance_to(target_position) < 0.1:
-			position = target_position
-
-			var dir = get_input_direction()
-
+		global_position = global_position.move_toward(target_position, SPEED * delta)
+		if global_position.distance_to(target_position) < 0.1:
+			global_position = target_position
 			if dir != Vector2.ZERO and check_collision(dir):
-				target_position = position + dir * TILE_SIZE
+				target_position = global_position + dir * TILE_SIZE
+				if dir == RIGHT:
+					frame = 1
+				elif dir == LEFT:
+					frame = 0
+				elif dir == DOWN:
+					frame = 2
+				elif dir == UP:
+					frame = 3
 			else:
 				moving = false
-
 	else:
-		var dir = get_input_direction()
-
 		if dir != Vector2.ZERO and check_collision(dir):
 			moving = true
-			target_position = position + dir * TILE_SIZE
-				
-				
-func get_input_direction() -> Vector2:
+			target_position = global_position + dir * TILE_SIZE
+			if dir == RIGHT:
+				frame = 1
+			elif dir == LEFT:
+				frame = 0
+			elif dir == DOWN:
+				frame = 2
+			elif dir == UP:
+				frame = 3
 
-	if Input.is_action_pressed("move_right"):
-		frame = 1
-		return RIGHT
-	elif Input.is_action_pressed("move_left"):
-		frame = 0
-		return LEFT
-	elif Input.is_action_pressed("move_down"):
-		frame = 2
-		return DOWN
-	elif Input.is_action_pressed("move_up"):
-		frame = 3
-		return UP
+func update_input_stack():
+	var directions = {"move_right": RIGHT, "move_left": LEFT, "move_up": UP, "move_down": DOWN}
+	for i in range(input_stack.size() - 1, -1, -1):
+		if not Input.is_action_pressed(input_stack[i][0]):
+			input_stack.remove_at(i)
+	for action_name in directions.keys():
+		if Input.is_action_just_pressed(action_name):
+			input_stack.append([action_name, directions[action_name]])
 
-	return Vector2.ZERO
-
-
-func _input(event: InputEvent) -> void: 
+func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("drop_bomb") and bomb_ready:
 		drop_bomb()
-		
 
 func check_collision(target: Vector2) -> bool:
 	var next_pos = global_position + target * TILE_SIZE
-	for bomb in get_parent().get_children():
-		if bomb is Bomb and bomb.global_position.distance_to(next_pos) < TILE_SIZE / 2:
-			bomb.push(target, TileManager.destructible_tilemap)
+	for bomb_inst in get_tree().get_nodes_in_group("bombs"):
+		if bomb_inst.global_position.distance_squared_to(next_pos) < (TILE_SIZE * TILE_SIZE) / 4:
+			if not bomb_inst.moving:
+				bomb_inst.push(target)
 			return true
 	var space_state: PhysicsDirectSpaceState2D = get_world_2d().direct_space_state
-	var query: PhysicsRayQueryParameters2D = PhysicsRayQueryParameters2D.create(
-		global_position,
-		next_pos
-	)
+	var query: PhysicsRayQueryParameters2D = PhysicsRayQueryParameters2D.create(global_position, next_pos)
 	query.exclude = [self]
 	query.set_collide_with_areas(false)
 	query.set_collide_with_bodies(true)
-	var result: Dictionary = space_state.intersect_ray(query)
-	return result.is_empty()
-
+	return space_state.intersect_ray(query).is_empty()
 
 func _on_timer_timeout() -> void:
 	bomb_ready = true
 
-
 func drop_bomb() -> void:
-	var bombInst: Bomb = bomb.instantiate()
+	var bombInst: Bomb = bomb_scene.instantiate()
 	get_parent().add_child(bombInst)
-
-	var pos = global_position
-	pos.x = floor(pos.x / TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2
-	pos.y = floor(pos.y / TILE_SIZE) * TILE_SIZE + TILE_SIZE / 2
-
-	bombInst.global_position = pos
+	bombInst.global_position = snap_to_grid(global_position)
 	bombInst.activate_bomb()
-
 	bomb_ready = false
 	bombTimer.start()
 
-
-func check_pickup() -> bool:
-	return true
+func snap_to_grid(pos: Vector2) -> Vector2:
+	return Vector2(floor(pos.x / TILE_SIZE) * TILE_SIZE + TILE_SIZE * 0.5, floor(pos.y / TILE_SIZE) * TILE_SIZE + TILE_SIZE * 0.5)
