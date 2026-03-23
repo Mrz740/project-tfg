@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://di2h1o61f78dl"]
+[gd_scene load_steps=4 format=3 uid="uid://di2h1o61f78dl"]
 
 [ext_resource type="Script" uid="uid://cnu42alk5l761" path="res://Bomb/bomb.gd" id="1_vlo8u"]
 
@@ -11,65 +11,8 @@ gradient = SubResource("Gradient_vlo8u")
 width = 4
 height = 4
 
-[sub_resource type="Animation" id="Animation_75bcl"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1.3528494, 1.3528494, 1.3528494, 1)]
-}
-
-[sub_resource type="Animation" id="Animation_vlo8u"]
-resource_name = "bomb_detonation"
-length = 2.0
-step = 3.0
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.25, 0.5, 0.75, 1, 1.1, 1.2, 1.3, 1.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [Color(1.3528494, 1.3528494, 1.3528494, 1), Color(1.3528494, 0, 0, 1), Color(1.3528494, 1.3528494, 1.3528494, 1), Color(1.3528494, 0, 0, 1), Color(1.3528494, 1.3528494, 1.3528494, 1), Color(1.3528494, 0, 0, 1), Color(1.3528494, 1.3528494, 1.3528494, 1), Color(1.3528494, 0, 0, 1), Color(1.3528494, 1.3528494, 1.3528494, 1)]
-}
-tracks/1/type = "method"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(1.4),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"activate_explosion"
-}]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_75bcl"]
-_data = {
-&"RESET": SubResource("Animation_75bcl"),
-&"bomb_detonation": SubResource("Animation_vlo8u")
-}
-
 [node name="Bomb" type="Sprite2D"]
 modulate = Color(1.3528494, 1.3528494, 1.3528494, 1)
 texture_filter = 1
 texture = SubResource("GradientTexture2D_75bcl")
 script = ExtResource("1_vlo8u")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_75bcl")
-}

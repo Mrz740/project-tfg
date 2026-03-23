@@ -1,6 +1,5 @@
 extends Sprite2D
 
-const TILE_SIZE := 4
 const SPEED := 32
 const UP := Vector2(0,-1)
 const DOWN := Vector2(0,1)
@@ -14,7 +13,15 @@ var moving := false
 var target_position := Vector2.ZERO
 var bomb_ready := true
 var input_stack := []
+var max_hp := int(3)
+var current_hp := int(3)
 
+func _init():
+	current_hp = max_hp
+	
+func _ready():
+	add_to_group("players")
+	
 func _physics_process(delta):
 	update_input_stack()
 	var dir = Vector2.ZERO
@@ -25,7 +32,7 @@ func _physics_process(delta):
 		if global_position.distance_to(target_position) < 0.1:
 			global_position = target_position
 			if dir != Vector2.ZERO and check_collision(dir):
-				target_position = global_position + dir * TILE_SIZE
+				target_position = global_position + dir * TileManager.tile_size
 				if dir == RIGHT:
 					frame = 1
 				elif dir == LEFT:
@@ -39,7 +46,7 @@ func _physics_process(delta):
 	else:
 		if dir != Vector2.ZERO and check_collision(dir):
 			moving = true
-			target_position = global_position + dir * TILE_SIZE
+			target_position = global_position + dir * TileManager.tile_size
 			if dir == RIGHT:
 				frame = 1
 			elif dir == LEFT:
@@ -63,9 +70,9 @@ func _input(event: InputEvent) -> void:
 		drop_bomb()
 
 func check_collision(target: Vector2) -> bool:
-	var next_pos = global_position + target * TILE_SIZE
+	var next_pos = global_position + target * TileManager.tile_size
 	for bomb_inst in get_tree().get_nodes_in_group("bombs"):
-		if bomb_inst.global_position.distance_squared_to(next_pos) < (TILE_SIZE * TILE_SIZE) / 4:
+		if bomb_inst.global_position.distance_squared_to(next_pos) < (TileManager.tile_size * TileManager.tile_size) / 4:
 			if not bomb_inst.moving:
 				bomb_inst.push(target)
 			return true
@@ -88,4 +95,13 @@ func drop_bomb() -> void:
 	bombTimer.start()
 
 func snap_to_grid(pos: Vector2) -> Vector2:
-	return Vector2(floor(pos.x / TILE_SIZE) * TILE_SIZE + TILE_SIZE * 0.5, floor(pos.y / TILE_SIZE) * TILE_SIZE + TILE_SIZE * 0.5)
+	return Vector2(floor(pos.x / TileManager.tile_size) * TileManager.tile_size + TileManager.tile_size * 0.5, floor(pos.y / TileManager.tile_size) * TileManager.tile_size + TileManager.tile_size * 0.5)
+
+func take_damage(damage: int) -> void:
+	current_hp -= damage
+	if (current_hp <= 0):
+		die()
+	#play damage anim + invulnerability
+	
+func die() -> void:
+	pass
