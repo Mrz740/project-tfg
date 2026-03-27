@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://di2h1o61f78dl"]
+[gd_scene format=3 uid="uid://di2h1o61f78dl"]
 
 [ext_resource type="Script" uid="uid://cnu42alk5l761" path="res://Bomb/bomb.gd" id="1_vlo8u"]
 
@@ -11,7 +11,7 @@ gradient = SubResource("Gradient_vlo8u")
 width = 4
 height = 4
 
-[node name="Bomb" type="Sprite2D"]
+[node name="Bomb" type="Sprite2D" unique_id=577467454]
 modulate = Color(1.3528494, 1.3528494, 1.3528494, 1)
 texture_filter = 1
 texture = SubResource("GradientTexture2D_75bcl")

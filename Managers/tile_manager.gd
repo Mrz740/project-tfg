@@ -24,14 +24,25 @@ func is_tile_free(pos: Vector2) -> bool:
 
 	return true
 	
-func destroy_tile(target: Vector2i, bomb_range: int) -> void:
-	destructible_tilemap.erase_cell(target)
-	for i in range(1, bomb_range + 1):
-		destructible_tilemap.erase_cell(target + Vector2i(i,0))
-		destructible_tilemap.erase_cell(target + Vector2i(-i,0))
-		destructible_tilemap.erase_cell(target + Vector2i(0,i))
-		destructible_tilemap.erase_cell(target + Vector2i(0,-i))
+func destroy_tile(origin: Vector2i, bomb_range: int) -> void:
+	_apply_explosion(origin, Vector2.ZERO)
 
+	for i in range(1, bomb_range + 1):
+		_apply_explosion(origin + Vector2i(i, 0), Vector2.RIGHT)
+		_apply_explosion(origin + Vector2i(-i, 0), Vector2.LEFT)
+		_apply_explosion(origin + Vector2i(0, i), Vector2.DOWN)
+		_apply_explosion(origin + Vector2i(0, -i), Vector2.UP)
+		
+func _apply_explosion(tile_pos: Vector2i, dir: Vector2) -> void:
+	destructible_tilemap.erase_cell(tile_pos)
+
+	var world_pos = destructible_tilemap.map_to_local(tile_pos)
+
+	for bomb in get_tree().get_nodes_in_group("bombs"):
+		if bomb.global_position.distance_to(world_pos) < tile_size * 0.5:
+			if dir != Vector2.ZERO:
+				bomb.push(dir)
+				
 func spawn_tile(target: Vector2i, atlas_coords: Vector2) -> void:
 	destructible_tilemap.set_cell(target,2,atlas_coords)
 	
