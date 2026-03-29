@@ -1,9 +1,9 @@
 [gd_scene format=4 uid="uid://dk003emjnfn78"]
 
-[ext_resource type="PackedScene" uid="uid://dsmce16r0wk4t" path="res://Player/Player.tscn" id="1_hpc76"]
 [ext_resource type="Script" uid="uid://b6ms7dw5ehyk5" path="res://Scenes/main_scene.gd" id="1_qxria"]
 [ext_resource type="Texture2D" uid="uid://tdfqjondg03" path="res://Sprites/BlockSprites.png" id="2_nhkr4"]
 [ext_resource type="PackedScene" uid="uid://d33rw13kuwq06" path="res://Turret/turret.tscn" id="4_7rqgy"]
+[ext_resource type="PackedScene" uid="uid://di2h1o61f78dl" path="res://Bomb/Bomb.tscn" id="4_qxria"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nhkr4"]
 texture = ExtResource("2_nhkr4")
@@ -31,23 +31,16 @@ tile_set = SubResource("TileSet_7rqgy")
 tile_map_data = PackedByteArray("AAABAAEAAgABAAAAAAABAAIAAgABAAAAAAACAAEAAgABAAAAAAACAAIAAgABAAAAAAADAAEAAgABAAAAAAADAAIAAgABAAAAAAAEAAEAAgABAAAAAAAEAAIAAgABAAAAAAAFAAEAAgABAAAAAAAFAAIAAgABAAAAAAAGAAEAAgABAAAAAAAGAAIAAgABAAAAAAAHAAEAAgABAAAAAAAHAAIAAgABAAAAAAAIAAEAAgABAAAAAAAIAAIAAgABAAAAAAAJAAEAAgABAAAAAAAJAAIAAgABAAAAAAAKAAEAAgABAAAAAAAKAAIAAgABAAAAAAALAAEAAgABAAAAAAALAAIAAgABAAAAAAAMAAEAAgABAAAAAAAMAAIAAgABAAAAAAANAAEAAgABAAAAAAANAAIAAgABAAAAAAAOAAEAAgABAAAAAAAOAAIAAgABAAAAAAABAA0AAgABAAAAAAABAA4AAgABAAAAAAACAA0AAgABAAAAAAACAA4AAgABAAAAAAADAA0AAgABAAAAAAADAA4AAgABAAAAAAAEAA0AAgABAAAAAAAEAA4AAgABAAAAAAAFAA0AAgABAAAAAAAFAA4AAgABAAAAAAAGAA0AAgABAAAAAAAGAA4AAgABAAAAAAAHAA0AAgABAAAAAAAHAA4AAgABAAAAAAAIAA0AAgABAAAAAAAIAA4AAgABAAAAAAAJAA0AAgABAAAAAAAJAA4AAgABAAAAAAAKAA0AAgABAAAAAAAKAA4AAgABAAAAAAALAA0AAgABAAAAAAALAA4AAgABAAAAAAAMAA0AAgABAAAAAAAMAA4AAgABAAAAAAANAA0AAgABAAAAAAANAA4AAgABAAAAAAAOAA0AAgABAAAAAAAOAA4AAgABAAAAAAABAAYAAgABAAAAAAABAAcAAgABAAAAAAABAAgAAgABAAAAAAABAAkAAgABAAAAAAACAAYAAgABAAAAAAACAAcAAgABAAAAAAACAAgAAgABAAAAAAACAAkAAgABAAAAAAADAAYAAgABAAAAAAADAAcAAgABAAAAAAADAAgAAgABAAAAAAADAAkAAgABAAAAAAAEAAYAAgABAAAAAAAEAAcAAgABAAAAAAAEAAgAAgABAAAAAAAEAAkAAgABAAAAAAALAAYAAgABAAAAAAALAAcAAgABAAAAAAALAAgAAgABAAAAAAALAAkAAgABAAAAAAAMAAYAAgABAAAAAAAMAAcAAgABAAAAAAAMAAgAAgABAAAAAAAMAAkAAgABAAAAAAANAAYAAgABAAAAAAANAAcAAgABAAAAAAANAAgAAgABAAAAAAANAAkAAgABAAAAAAAOAAYAAgABAAAAAAAOAAcAAgABAAAAAAAOAAgAAgABAAAAAAAOAAkAAgABAAAAAAA=")
 tile_set = SubResource("TileSet_7rqgy")
 
-[node name="Player1" parent="." unique_id=1791052237 instance=ExtResource("1_hpc76")]
-position = Vector2(2, 2)
-
 [node name="SpawnTileTimer" type="Timer" parent="." unique_id=583249699]
 autostart = true
 
-[node name="Turret" parent="." unique_id=716832591 instance=ExtResource("4_7rqgy")]
-position = Vector2(62, 42)
-shoot_interval = 2.0
-shoot_direction = Vector2(-1, 0)
+[node name="Bomb" parent="." unique_id=577467454 instance=ExtResource("4_qxria")]
+position = Vector2(34, 22)
+explode_time = 10.0
 
-[node name="Turret2" parent="." unique_id=2010807476 instance=ExtResource("4_7rqgy")]
+[node name="Turret" parent="." unique_id=911284012 instance=ExtResource("4_7rqgy")]
 position = Vector2(2, 22)
 shoot_interval = 2.0
-
-[node name="Player" parent="." unique_id=281422011 instance=ExtResource("1_hpc76")]
-position = Vector2(62, 54)
-player_id = 2
+bomb_speed = 32
 
 [connection signal="timeout" from="SpawnTileTimer" to="." method="_on_spawn_tile_timer_timeout"]
