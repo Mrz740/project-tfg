@@ -10,6 +10,8 @@ var flashing: bool = false
 var elapsed: float = 0.0
 var flash_timer: float = 0.0
 
+@onready var explosion_scene: PackedScene = preload("res://Bomb/explosion.tscn")
+
 func _ready():
 	super()
 	add_to_group("bombs")
@@ -70,6 +72,9 @@ func flashing_effect(delta: float) -> void:
 
 func explode() -> void:
 	global_position = get_snapped_position(global_position)
-	var tile_pos = TileManager.destructible_tilemap.local_to_map(global_position)
-	TileManager.destroy_tile(tile_pos, radius)
+
+	var explosion = explosion_scene.instantiate()
+	get_parent().add_child(explosion)
+	explosion.start(global_position, radius)
+
 	queue_free()

@@ -5,13 +5,18 @@ const H = 64
 
 var serial := GdSerial.new()
 var last_frame := PackedByteArray()  # store previous frame
+var ready_to_send := false
 
 func _ready():
 	serial.set_port("COM4")
 	serial.set_baud_rate(2000000)
 	serial.open()
+	call_deferred("_initialize")  # wait until the scene is fully loaded
 
-
+func _initialize() -> void:
+	await get_tree().process_frame  # wait one frame for all nodes to initialize
+	last_frame = PackedByteArray()  # reset last_frame
+	ready_to_send = true
 
 func _process(_delta):
 	var img = get_viewport().get_texture().get_image()
@@ -20,20 +25,35 @@ func _process(_delta):
 
 	var data: PackedByteArray = img.get_data()
 
-	# Initialize last_frame on the first frame
+	# Count how many bytes will be sent this frame
+	var bytes_to_send := 0
 	if last_frame.size() != data.size():
 		last_frame = data.duplicate()
-		return  # nothing to send yet
+		return
 
-	# Compare pixels and send only changed ones
 	for i in range(0, data.size(), 3):
 		var r = data[i]
-		var g = data[i+1]
-		var b = data[i+2]
+		var g = data[i + 1]
+		var b = data[i + 2]
 
 		var lr = last_frame[i]
-		var lg = last_frame[i+1]
-		var lb = last_frame[i+2]
+		var lg = last_frame[i + 1]
+		var lb = last_frame[i + 2]
+
+		if r != lr or g != lg or b != lb:
+			bytes_to_send += 5  # x, y, r, g, b
+
+	print("DEBUG: bytes to send this frame: ", bytes_to_send)
+
+	# Then send only changed pixels
+	for i in range(0, data.size(), 3):
+		var r = data[i]
+		var g = data[i + 1]
+		var b = data[i + 2]
+
+		var lr = last_frame[i]
+		var lg = last_frame[i + 1]
+		var lb = last_frame[i + 2]
 
 		if r != lr or g != lg or b != lb:
 			var pixel_index = i / 3
@@ -46,9 +66,7 @@ func _process(_delta):
 			serial.write([g])
 			serial.write([b])
 
-	# Save current frame as last_frame for next iteration
 	last_frame = data.duplicate()
-	
+
 func _exit_tree():
-	# send stop command to ESP32
 	serial.write([255, 255, 0, 0, 0])

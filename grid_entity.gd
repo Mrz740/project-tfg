@@ -30,14 +30,13 @@ func try_move(dir: Vector2) -> bool:
 			continue
 
 		var check_pos = entity.target_position if entity.moving else entity.global_position
-		print(check_pos.distance_to(next_tile))
 
 		if get_snapped_position(check_pos) == next_tile:
 			hit_entity = entity
 			break
 
 	if hit_entity != null:
-		if hit_entity.is_in_group("bombs") and hit_entity.can_be_pushed(dir):
+		if self.is_in_group("players") and hit_entity.can_be_pushed(dir):
 			hit_entity.push(dir)
 		else:
 			return false
