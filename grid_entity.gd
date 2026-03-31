@@ -15,6 +15,7 @@ func get_snapped_position(pos: Vector2) -> Vector2:
 		floor(pos.x / TileManager.tile_size) * TileManager.tile_size + TileManager.tile_size * 0.5,
 		floor(pos.y / TileManager.tile_size) * TileManager.tile_size + TileManager.tile_size * 0.5
 	)
+
 func try_move(dir: Vector2) -> bool:
 	if moving:
 		return false
@@ -29,7 +30,9 @@ func try_move(dir: Vector2) -> bool:
 			continue
 
 		var check_pos = entity.target_position if entity.moving else entity.global_position
-		if check_pos.distance_to(next_tile) < TileManager.tile_size * 0.5:
+		print(check_pos.distance_to(next_tile))
+
+		if get_snapped_position(check_pos) == next_tile:
 			hit_entity = entity
 			break
 

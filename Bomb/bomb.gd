@@ -27,22 +27,22 @@ func push(dir: Vector2) -> void:
 	try_move(dir)
 
 func can_be_pushed(dir: Vector2) -> bool:
-	if moving:
-		return false
-
 	var next_tile = get_snapped_position(global_position) + dir * TileManager.tile_size
 
 	for entity in get_tree().get_nodes_in_group("grid_entities"):
 		if entity == self:
 			continue
-		if entity.global_position.distance_to(next_tile) < TileManager.tile_size * 0.5:
-			return false
 
-	if not TileManager.is_tile_free(next_tile):
-		return false
+		var check_pos = entity.target_position if entity.moving else entity.global_position
 
-	return true
+		if get_snapped_position(check_pos) == next_tile:
+			if entity.is_in_group("bombs"):
+				return entity.can_be_pushed(dir)
+			else:
+				return false
 
+	return TileManager.is_tile_free(next_tile)
+	
 func _physics_process(delta: float) -> void:
 	flashing_effect(delta)
 
