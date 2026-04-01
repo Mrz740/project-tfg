@@ -1,17 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://d33rw13kuwq06"]
+[gd_scene format=3 uid="uid://d33rw13kuwq06"]
 
 [ext_resource type="Script" uid="uid://cqh15uju5fp00" path="res://Turret/turret.gd" id="1_5kpma"]
+[ext_resource type="Texture2D" uid="uid://cx8jhdy1onj3j" path="res://Turret/turret.png" id="2_djkev"]
 
-[sub_resource type="Gradient" id="Gradient_5kpma"]
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_djkev"]
-gradient = SubResource("Gradient_5kpma")
-width = 4
-height = 4
-
-[node name="Turret" type="Node2D"]
+[node name="Turret" type="Sprite2D" unique_id=1315907247]
+texture = ExtResource("2_djkev")
 script = ExtResource("1_5kpma")
 shoot_interval = 1.0
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = SubResource("GradientTexture2D_djkev")

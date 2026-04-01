@@ -26,10 +26,8 @@ func is_explosion_blocked(pos: Vector2) -> bool:
 
 
 func destroy_tile_at(tile_coords: Vector2i, dir: Vector2) -> bool:
-	
 	if destructible_tilemap.get_cell_tile_data(tile_coords) != null:
 		destructible_tilemap.erase_cell(tile_coords)
-
 		return true
 
 	var local_pos = destructible_tilemap.map_to_local(tile_coords)
@@ -39,9 +37,12 @@ func destroy_tile_at(tile_coords: Vector2i, dir: Vector2) -> bool:
 		if bomb.global_position.distance_to(world_pos) < tile_size * 0.5:
 			if dir != Vector2.ZERO:
 				bomb.push(dir)
+
+	for player in get_tree().get_nodes_in_group("players"):
+		if player.global_position.distance_to(world_pos) < tile_size * 0.5:
+			player.take_damage(1)
+
 	return false
-
-
 func tile_to_world(tile_coords: Vector2i) -> Vector2:
 	return destructible_tilemap.map_to_local(tile_coords) + Vector2(tile_size/2, tile_size/2)
 

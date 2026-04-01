@@ -4,18 +4,18 @@ const W = 64
 const H = 64
 
 var serial := GdSerial.new()
-var last_frame := PackedByteArray()  # store previous frame
+var last_frame := PackedByteArray()
 var ready_to_send := false
 
 func _ready():
 	serial.set_port("COM4")
 	serial.set_baud_rate(2000000)
 	serial.open()
-	call_deferred("_initialize")  # wait until the scene is fully loaded
+	call_deferred("_initialize")
 
 func _initialize() -> void:
-	await get_tree().process_frame  # wait one frame for all nodes to initialize
-	last_frame = PackedByteArray()  # reset last_frame
+	await get_tree().process_frame
+	last_frame = PackedByteArray()
 	ready_to_send = true
 
 func _process(_delta):
@@ -43,9 +43,6 @@ func _process(_delta):
 		if r != lr or g != lg or b != lb:
 			bytes_to_send += 5  # x, y, r, g, b
 
-	print("DEBUG: bytes to send this frame: ", bytes_to_send)
-
-	# Then send only changed pixels
 	for i in range(0, data.size(), 3):
 		var r = data[i]
 		var g = data[i + 1]
