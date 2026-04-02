@@ -114,11 +114,11 @@ func update_flashing(delta: float) -> void:
 
 	if flash_timer >= interval:
 		flash_timer = 0.0
-		modulate = Color.RED if modulate == Color.WHITE else Color.WHITE
+		visible = !visible
 
 	if flash_elapsed >= invincibility_time:
 		flashing = false
-		modulate = Color.WHITE
+		visible = true
 		
 func die() -> void:
 	visible = false
