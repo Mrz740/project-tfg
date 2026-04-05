@@ -1,18 +1,10 @@
 [gd_scene format=3 uid="uid://di2h1o61f78dl"]
 
+[ext_resource type="Texture2D" uid="uid://b8wh3xumabnmy" path="res://Bomb/bomb_sprite.png" id="1_75bcl"]
 [ext_resource type="Script" uid="uid://cnu42alk5l761" path="res://Bomb/bomb.gd" id="1_vlo8u"]
-
-[sub_resource type="Gradient" id="Gradient_vlo8u"]
-offsets = PackedFloat32Array(0.011278195, 1)
-colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_75bcl"]
-gradient = SubResource("Gradient_vlo8u")
-width = 4
-height = 4
 
 [node name="Bomb" type="Sprite2D" unique_id=577467454]
 modulate = Color(1.3528494, 1.3528494, 1.3528494, 1)
 texture_filter = 1
-texture = SubResource("GradientTexture2D_75bcl")
+texture = ExtResource("1_75bcl")
 script = ExtResource("1_vlo8u")

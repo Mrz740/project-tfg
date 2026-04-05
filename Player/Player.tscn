@@ -7,7 +7,6 @@
 texture_filter = 1
 texture = ExtResource("1_q3lat")
 hframes = 4
-frame = 3
 script = ExtResource("1_3qydi")
 
 [node name="BombCooldown" type="Timer" parent="." unique_id=1240761177]

@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://vww82g65ia5y"]
+
+[ext_resource type="Texture2D" uid="uid://doc06yr15iqlp" path="res://Player/player_sprite.png" id="1_an5dg"]
+
+[node name="ScoreCounter" type="Control" unique_id=1857879245]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WhichPlayer" type="Sprite2D" parent="." unique_id=1078446712]
+position = Vector2(2, 2)
+texture = ExtResource("1_an5dg")
+hframes = 4
+frame = 3
+region_rect = Rect2(0, 0, 4, 4)

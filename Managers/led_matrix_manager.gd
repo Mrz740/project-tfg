@@ -17,6 +17,8 @@ func _initialize() -> void:
 	await get_tree().process_frame
 	last_frame = PackedByteArray()
 	ready_to_send = true
+	serial.write([255, 255, 0, 0, 0])
+
 
 func _process(_delta):
 	var img = get_viewport().get_texture().get_image()
@@ -25,23 +27,9 @@ func _process(_delta):
 
 	var data: PackedByteArray = img.get_data()
 
-	# Count how many bytes will be sent this frame
-	var bytes_to_send := 0
 	if last_frame.size() != data.size():
 		last_frame = data.duplicate()
 		return
-
-	for i in range(0, data.size(), 3):
-		var r = data[i]
-		var g = data[i + 1]
-		var b = data[i + 2]
-
-		var lr = last_frame[i]
-		var lg = last_frame[i + 1]
-		var lb = last_frame[i + 2]
-
-		if r != lr or g != lg or b != lb:
-			bytes_to_send += 5  # x, y, r, g, b
 
 	for i in range(0, data.size(), 3):
 		var r = data[i]
