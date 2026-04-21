@@ -24,6 +24,11 @@ var flash_elapsed: float = 0.0
 var flash_timer: float = 0.0
 var flashing: bool = false
 
+var health_counter: HealthCounter
+
+var has_shield: bool = false
+var has_big_bomb: bool = false
+
 func _init():
 	current_hp = max_hp
 	speed = 32
@@ -32,7 +37,7 @@ func _ready() -> void:
 	super()
 	bombTimer.start(bomb_cooldown)
 	add_to_group("players")
-
+	
 func _physics_process(delta: float) -> void:
 	var dir = Vector2.ZERO
 	update_flashing(delta)
@@ -78,6 +83,13 @@ func drop_bomb() -> void:
 	var bombInst: Bomb = bomb_scene.instantiate()
 	get_parent().add_child(bombInst)
 	bombInst.global_position = get_snapped_position(global_position)
+	
+	if has_big_bomb:
+		bombInst.radius = 5  # Big bomb has larger radius
+		has_big_bomb = false
+	else:
+		bombInst.radius = 2  # Normal bomb radius
+	
 	bombInst.activate_bomb()
 	bomb_ready = false
 	bombTimer.start(bomb_cooldown)
@@ -86,10 +98,18 @@ func _on_timer_timeout() -> void:
 	bomb_ready = true
 
 func take_damage(damage: int) -> void:
+	if has_shield:
+		has_shield = false
+		modulate = Color.WHITE  # Reset color to normal
+		return
+	
 	if invincible:
 		return
 
 	current_hp -= damage
+	if health_counter:
+		health_counter.remove_hp()
+	
 	if current_hp <= 0:
 		die()
 		return
@@ -123,3 +143,19 @@ func update_flashing(delta: float) -> void:
 func die() -> void:
 	visible = false
 	remove_from_group("players")
+
+func heal(amount: int) -> void:
+	current_hp = min(current_hp + amount, max_hp)
+	if health_counter:
+		# Recreate health display to show new HP
+		health_counter.clear_display()
+		for i in range(current_hp):
+			var color_rect = ColorRect.new()
+			color_rect.custom_minimum_size = Vector2(2, 2)
+			color_rect.color = Color.WHITE
+			health_counter.get_node("HBoxContainer").add_child(color_rect)
+
+func apply_shield() -> void:
+	has_shield = true
+	modulate = Color(0.0, 1.13, 18.892)  # Make player blue when shielded
+
