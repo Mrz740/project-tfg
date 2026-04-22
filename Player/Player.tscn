@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://dsmce16r0wk4t"]
 
 [ext_resource type="Script" uid="uid://cxn7lkyywjxxe" path="res://Player/player.gd" id="1_3qydi"]
-[ext_resource type="Texture2D" uid="uid://doc06yr15iqlp" path="res://Player/player_sprite.png" id="1_q3lat"]
+[ext_resource type="Texture2D" uid="uid://doc06yr15iqlp" path="res://Player/PlayerSprites/player_sprite1.png" id="1_q3lat"]
 
 [node name="Player" type="Sprite2D" unique_id=281422011]
 texture_filter = 1

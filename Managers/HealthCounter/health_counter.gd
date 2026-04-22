@@ -2,9 +2,10 @@ extends Control
 
 class_name HealthCounter
 
-func initialize(hp: int) -> void:
+func initialize(hp: int, player_texture: Texture2D = null) -> void:
+	var playerIcon = $PlayerIcon
+	playerIcon.texture = player_texture 
 	var hbox = $HBoxContainer
-
 	for i in range(hp):
 		var color_rect = ColorRect.new()
 		color_rect.custom_minimum_size = Vector2(2, 2)

@@ -9,6 +9,7 @@ enum Direction {
 }
 
 @export var shoot_interval := 2.0
+@export var first_shot_delay: float = 1
 @export var shoot_direction: Direction = Direction.RIGHT
 @export var bomb_speed: int = 30
 @export var bomb_time: float = 2
@@ -23,9 +24,10 @@ func _ready():
 
 
 func shoot_loop():
+	await get_tree().create_timer(first_shot_delay).timeout
 	while true:
-		await get_tree().create_timer(shoot_interval).timeout
 		shoot()
+		await get_tree().create_timer(shoot_interval).timeout
 
 
 func shoot():

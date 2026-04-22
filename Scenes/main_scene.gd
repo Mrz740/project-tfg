@@ -15,7 +15,7 @@ func _ready():
 	for player in get_tree().get_nodes_in_group("players"):
 		var health_counter: HealthCounter = health_counter_scene.instantiate()
 		hbox_container.add_child(health_counter)
-		health_counter.initialize(player.max_hp)
+		health_counter.initialize(player.max_hp, player.texture)
 		player.health_counter = health_counter
 	
 	# Setup powerup spawn timer
@@ -67,8 +67,29 @@ func get_random_spawn_position() -> Vector2:
 		var world_pos = TileManager.tile_to_world(random_cell) + Vector2(2, 2)
 		
 		# Check if the position is free (not occupied by tiles)
-		if TileManager.is_tile_free(world_pos):
-			return world_pos
+		if not TileManager.is_tile_free(world_pos):
+			continue
+		
+		# Check if position is occupied by grid entities (players, bombs, turrets)
+		var occupied = false
+		for entity in get_tree().get_nodes_in_group("grid_entities"):
+			if world_pos.distance_to(entity.global_position) < TileManager.tile_size:
+				occupied = true
+				break
+		
+		if occupied:
+			continue
+		
+		# Check if position is occupied by other powerups
+		for powerup in get_tree().get_nodes_in_group("powerups"):
+			if world_pos.distance_to(powerup.global_position) < TileManager.tile_size:
+				occupied = true
+				break
+		
+		if occupied:
+			continue
+		
+		return world_pos
 	
 	return Vector2.ZERO  # Return zero if no free position found
 

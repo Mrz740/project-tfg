@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://tdfqjondg03" path="res://Sprites/BlockSprites.png" id="2_nhkr4"]
 [ext_resource type="PackedScene" uid="uid://d33rw13kuwq06" path="res://Turret/turret.tscn" id="4_7rqgy"]
 [ext_resource type="PackedScene" uid="uid://dsmce16r0wk4t" path="res://Player/Player.tscn" id="4_qxria"]
+[ext_resource type="Texture2D" uid="uid://cyeocu2qha30n" path="res://Player/PlayerSprites/player_sprite2.png" id="4_y4jh7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nhkr4"]
 texture = ExtResource("2_nhkr4")
@@ -41,23 +42,32 @@ autostart = true
 [node name="Player" parent="." unique_id=281422011 instance=ExtResource("4_qxria")]
 position = Vector2(22, 22)
 
+[node name="Player2" parent="." unique_id=2036850441 instance=ExtResource("4_qxria")]
+position = Vector2(42, 22)
+texture = ExtResource("4_y4jh7")
+player_id = 2
+
 [node name="Turret3" parent="." unique_id=266538634 instance=ExtResource("4_7rqgy")]
 position = Vector2(62, 42)
 shoot_interval = 2.5
+first_shot_delay = 0.8
 shoot_direction = 2
 
 [node name="Turret5" parent="." unique_id=1315907247 instance=ExtResource("4_7rqgy")]
 position = Vector2(62, 22)
 shoot_interval = 2.5
+first_shot_delay = 0.4
 shoot_direction = 2
 
 [node name="Turret4" parent="." unique_id=784517050 instance=ExtResource("4_7rqgy")]
 position = Vector2(2, 42)
 shoot_interval = 2.5
+first_shot_delay = 0.6
 
 [node name="Turret6" parent="." unique_id=1885114972 instance=ExtResource("4_7rqgy")]
 position = Vector2(2, 22)
 shoot_interval = 2.5
+first_shot_delay = 0.2
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=151417877]
 top_level = true

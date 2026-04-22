@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://vww82g65ia5y"]
 
 [ext_resource type="Script" uid="uid://5wkbqsjl7c64" path="res://Managers/HealthCounter/health_counter.gd" id="1_66yix"]
-[ext_resource type="Texture2D" uid="uid://doc06yr15iqlp" path="res://Player/player_sprite.png" id="1_an5dg"]
+[ext_resource type="Texture2D" uid="uid://doc06yr15iqlp" path="res://Player/PlayerSprites/player_sprite1.png" id="1_an5dg"]
 
 [node name="HealthCounter" type="Control" unique_id=1857879245]
 layout_mode = 3
@@ -12,7 +12,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_66yix")
 
-[node name="WhichPlayer" type="Sprite2D" parent="." unique_id=1078446712]
+[node name="PlayerIcon" type="Sprite2D" parent="." unique_id=1078446712]
 position = Vector2(2, 2)
 texture = ExtResource("1_an5dg")
 hframes = 4
