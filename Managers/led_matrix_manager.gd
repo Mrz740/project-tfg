@@ -5,23 +5,37 @@ const H = 64
 
 var serial := GdSerial.new()
 var last_frame := PackedByteArray()
-var ready_to_send := false
+var syncing := false
 
 func _ready():
-	serial.set_port("COM4")
-	serial.set_baud_rate(2000000)
+	pass
+
+func connect_led(port: String, baud_rate: int) -> void:
+	serial.set_port(port)
+	serial.set_baud_rate(baud_rate)
 	serial.open()
 	call_deferred("_initialize")
 
 func _initialize() -> void:
 	await get_tree().process_frame
 	last_frame = PackedByteArray()
-	ready_to_send = true
 	serial.write([255, 255, 0, 0, 0])
 
+func start_syncing() -> void:
+	syncing = true
+
+func stop_syncing() -> void:
+	syncing = false
 
 func _process(_delta):
-	var img = get_viewport().get_texture().get_image()
+	if not syncing or not serial.is_open():
+		return
+	
+	var viewport = get_viewport()
+	if not viewport:
+		return
+	
+	var img = viewport.get_texture().get_image()
 	img.resize(W, H)
 	img.convert(Image.FORMAT_RGB8)
 
@@ -54,4 +68,5 @@ func _process(_delta):
 	last_frame = data.duplicate()
 
 func _exit_tree():
-	serial.write([255, 255, 0, 0, 0])
+	if syncing:
+		serial.write([255, 255, 0, 0, 0])

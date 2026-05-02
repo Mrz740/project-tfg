@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bvbw1kpjxen22"]
+
+[ext_resource type="Script" uid="uid://gki67fv2niqb" path="res://Scenes/settings_menu.gd" id="1_bxjf0"]
+[ext_resource type="PackedScene" uid="uid://ctiyvx6luhh5d" path="res://Scenes/ReturnButton.tscn" id="1_h4rey"]
+
+[node name="SettingsMenu" type="Node2D" unique_id=167926229]
+script = ExtResource("1_bxjf0")
+
+[node name="Background" type="ColorRect" parent="." unique_id=1107725168]
+offset_right = 64.0
+offset_bottom = 64.0
+color = Color(0, 0, 0, 1)
+
+[node name="ReturnButton" parent="." unique_id=213131517 instance=ExtResource("1_h4rey")]
