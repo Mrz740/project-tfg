@@ -7,6 +7,5 @@
 offset_right = 8.0
 offset_bottom = 8.0
 theme = ExtResource("1_jmlgj")
+text = "RETURN"
 script = ExtResource("1_5t7k5")
-
-[node name="ButtonSprite" type="Sprite2D" parent="." unique_id=1513211532]

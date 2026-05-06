@@ -2,6 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://ctiyvx6luhh5d" path="res://Scenes/ReturnButton.tscn" id="1_m5t5j"]
 [ext_resource type="Script" uid="uid://k0tn02ryowqi" path="res://Scenes/setup_menu.gd" id="1_n0ve8"]
+[ext_resource type="FontFile" uid="uid://byke0i2614qob" path="res://Scenes/5x5_pixel.ttf" id="3_e4yin"]
+[ext_resource type="Theme" uid="uid://by7xn6lx6ov6m" path="res://Scenes/button_theme.tres" id="3_t6qeu"]
 
 [node name="SetupMenu" type="Node2D" unique_id=167926229]
 script = ExtResource("1_n0ve8")
@@ -11,16 +13,37 @@ offset_right = 64.0
 offset_bottom = 64.0
 color = Color(0, 0, 0, 1)
 
-[node name="ReturnButton" parent="." unique_id=213131517 instance=ExtResource("1_m5t5j")]
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=578923321]
+offset_left = 3.0
+offset_top = 45.0
+offset_right = 61.0
+offset_bottom = 59.0
+color = Color(0.3083999, 0.3083999, 0.3083999, 1)
+
+[node name="ConnectionStateLabel" type="Label" parent="ColorRect2" unique_id=418578023]
+unique_name_in_owner = true
+modulate = Color(0, 0.9666667, 1, 1)
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 113.0
+offset_bottom = 25.0
+scale = Vector2(0.5, 0.5)
+theme_override_fonts/font = ExtResource("3_e4yin")
+text = "WAITING"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=466984581]
-offset_left = 12.0
-offset_top = 14.0
-offset_right = 52.0
-offset_bottom = 54.0
+offset_top = 2.0
+offset_right = 128.0
+offset_bottom = 86.0
+scale = Vector2(0.5, 0.5)
 
-[node name="ConnectButton" type="Button" parent="VBoxContainer" unique_id=1763960561]
+[node name="ReturnButton" parent="VBoxContainer" unique_id=213131517 instance=ExtResource("1_m5t5j")]
 layout_mode = 2
 
-[node name="StartSyncingButton" type="Button" parent="VBoxContainer" unique_id=602817600]
+[node name="ScanButton" type="Button" parent="VBoxContainer" unique_id=1763960561]
 layout_mode = 2
+theme = ExtResource("3_t6qeu")
+text = "SCAN"

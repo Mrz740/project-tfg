@@ -10,22 +10,28 @@ var syncing := false
 func _ready():
 	pass
 
-func connect_led(port: String, baud_rate: int) -> void:
+func try_connect_led(port: String, baud_rate: int) -> bool:
 	serial.set_port(port)
 	serial.set_baud_rate(baud_rate)
-	serial.open()
-	call_deferred("_initialize")
+	var connected :bool = serial.open()
+	connected = connected and call_deferred("_initialize")
+	return connected
 
-func _initialize() -> void:
+func _initialize() -> bool:
 	await get_tree().process_frame
 	last_frame = PackedByteArray()
-	serial.write([255, 255, 0, 0, 0])
+	return serial.write([255, 255, 0, 0, 0])
 
 func start_syncing() -> void:
 	syncing = true
 
 func stop_syncing() -> void:
 	syncing = false
+	clear_display()
+
+func clear_display() -> void:
+	if serial.is_open():
+		serial.write([255, 255, 0, 0, 0])
 
 func _process(_delta):
 	if not syncing or not serial.is_open():
@@ -67,6 +73,8 @@ func _process(_delta):
 
 	last_frame = data.duplicate()
 
+func get_open_ports() -> Dictionary:
+	return serial.list_ports()
+	
 func _exit_tree():
-	if syncing:
-		serial.write([255, 255, 0, 0, 0])
+	clear_display()
