@@ -1,6 +1,6 @@
 [gd_scene format=4 uid="uid://dk003emjnfn78"]
 
-[ext_resource type="Script" uid="uid://b6ms7dw5ehyk5" path="res://Scenes/main_scene.gd" id="1_qxria"]
+[ext_resource type="Script" uid="uid://b6ms7dw5ehyk5" path="res://Scenes/GameScene/game_scene.gd" id="1_qxria"]
 [ext_resource type="Texture2D" uid="uid://tdfqjondg03" path="res://Sprites/BlockSprites.png" id="2_nhkr4"]
 [ext_resource type="PackedScene" uid="uid://d33rw13kuwq06" path="res://Turret/turret.tscn" id="4_7rqgy"]
 [ext_resource type="PackedScene" uid="uid://dsmce16r0wk4t" path="res://Player/Player.tscn" id="4_qxria"]

@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://ckm10gxwcttkr"]
+
+[ext_resource type="Texture2D" uid="uid://ca75dbtxd3g4x" path="res://Scenes/SelectionMenu/selection_menu_sprite.png" id="2_2tft3"]
+
+[node name="SelectionMenu" type="Node2D" unique_id=1961211314]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1733024456]
+position = Vector2(32, 32)
+texture = ExtResource("2_2tft3")

@@ -8,4 +8,4 @@ func _input(event: InputEvent) -> void:
 		return_to_main_menu()
 
 func return_to_main_menu() -> void:
-	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+	get_tree().change_scene_to_file("res://Scenes/MainMenu/MainMenu.tscn")

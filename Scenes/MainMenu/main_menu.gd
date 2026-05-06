@@ -1,9 +1,9 @@
 extends BaseMenu
 
 var menu_scenes = {
-	"PlayButton": "res://Scenes/SelectionScene.tscn",
-	"SetupButton": "res://Scenes/SetupMenu.tscn",
-	"SettingsButton": "res://Scenes/SettingsMenu.tscn"
+	"PlayButton": "res://Scenes/SelectionMenu/SelectionMenu.tscn",
+	"SetupButton": "res://Scenes/SetupMenu/SetupMenu.tscn",
+	"SettingsButton": "res://Scenes/SettingsMenu/SettingsMenu.tscn"
 }
 
 func execute_button(button_name: String) -> void:
