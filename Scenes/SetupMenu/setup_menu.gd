@@ -10,6 +10,7 @@ var available_ports: Dictionary = {}
 var port_buttons: Array[Button] = []
 
 func _ready() -> void:
+	parent_scene = "res://Scenes/MainMenu/MainMenu.tscn"
 	for child in vbox.get_children():
 		if child is Button:
 			buttons.append(child)
@@ -31,7 +32,7 @@ func execute_button(button_name: String) -> void:
 				connect_to_port(port_name)
 
 func return_to_main() -> void:
-	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+	get_tree().change_scene_to_file("res://Scenes/MainMenu/MainMenu.tscn")
 
 func scan_ports() -> void:
 	available_ports = LedMatrixManager.get_open_ports()

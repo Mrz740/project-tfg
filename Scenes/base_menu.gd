@@ -1,11 +1,16 @@
 extends Node2D
 class_name BaseMenu
 
-@onready var vbox = $VBoxContainer
+var vbox: Node = null
 var buttons: Array[Button] = []
 var current_index: int = 0
+var parent_scene: String = ""  # Scene to return to when pressing "return"
 
 func _ready() -> void:
+	vbox = get_node_or_null("VBoxContainer")
+	if vbox == null:
+		return
+	
 	for child in vbox.get_children():
 		if child is Control:
 			child.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -18,6 +23,11 @@ func _ready() -> void:
 	buttons[0].grab_focus()
 
 func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("return"):
+		if parent_scene != "":
+			get_tree().change_scene_to_file(parent_scene)
+		return
+	
 	if buttons.is_empty():
 		return
 	if event.is_action_pressed("p1_up"):
