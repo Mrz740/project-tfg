@@ -3,7 +3,8 @@ extends Node2D
 const AVAILABLE_SPRITES: Array[String] = [
 	"res://Player/PlayerSprites/player_sprite1.png",
 	"res://Player/PlayerSprites/player_sprite2.png",
-	"res://Player/PlayerSprites/player_sprite3.png"
+	"res://Player/PlayerSprites/player_sprite3.png",
+	"res://Player/PlayerSprites/player_sprite4.png"
 ]
 const SPRITE_FRAMES: int = 4
 const COOLDOWN_TIME: float = 3.0
@@ -30,6 +31,7 @@ var players: Array[PlayerState] = [PlayerState.new(), PlayerState.new()]
 @onready var cooldown_label: Label = $CooldownLabel
 
 var remaining_time: float = 0.0
+var conflict_warning_shown: bool = false
 
 func _ready() -> void:
 	players[0].selected_sprite = 0
@@ -65,33 +67,22 @@ func _move_player(player: int, direction: int) -> void:
 	_update_displays()
 	_check_conflict()
 
-# Generic lock toggle
 func _toggle_lock(player: int) -> void:
 	players[player].locked = !players[player].locked
 	player_locks[player].visible = players[player].locked
 	_check_both_locked()
 
-# Update all displays
 func _update_displays() -> void:
 	for i in range(2):
 		var player_data = players[i]
-		var sprite_path = AVAILABLE_SPRITES[player_data.selected_sprite]
-		player_sprites[i].texture = load(sprite_path)
 		player_sprites[i].frame = player_data.selected_frame
-		player_locks[i].texture = load(sprite_path)
-		player_locks[i].frame = player_data.selected_frame
 
-# Conflict detection
 func _check_conflict() -> void:
-	var conflict: bool = (
-		players[0].selected_sprite == players[1].selected_sprite and
-		players[0].selected_frame == players[1].selected_frame
-	)
-	conflict_sprite.visible = conflict
+	conflict_sprite.visible = players[0].selected_frame == players[1].selected_frame
+	conflict_warning_shown = conflict_sprite.visible
 
-# Check if both players are locked
 func _check_both_locked() -> void:
-	if players[0].locked and players[1].locked:
+	if players[0].locked and players[1].locked and not conflict_warning_shown:
 		_start_cooldown()
 
 # Start cooldown timer
