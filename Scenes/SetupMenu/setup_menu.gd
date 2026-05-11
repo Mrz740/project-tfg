@@ -11,18 +11,10 @@ var port_buttons: Array[Button] = []
 
 func _ready() -> void:
 	parent_scene = "res://Scenes/MainMenu/MainMenu.tscn"
-	for child in vbox.get_children():
-		if child is Button:
-			buttons.append(child)
-			child.focus_mode = Control.FOCUS_ALL
-	await get_tree().process_frame
-	if buttons.size() > 0:
-		buttons[0].grab_focus()
+	super._ready()
 
 func execute_button(button_name: String) -> void:
 	match button_name:
-		"ReturnButton":
-			return_to_main()
 		"ScanButton":
 			scan_ports()
 		_:
@@ -30,9 +22,6 @@ func execute_button(button_name: String) -> void:
 			if button_name.begins_with("Port_"):
 				var port_name = button_name.trim_prefix("Port_")
 				connect_to_port(port_name)
-
-func return_to_main() -> void:
-	get_tree().change_scene_to_file("res://Scenes/MainMenu/MainMenu.tscn")
 
 func scan_ports() -> void:
 	available_ports = LedMatrixManager.get_open_ports()
@@ -43,7 +32,8 @@ func create_port_buttons() -> void:
 		btn.queue_free()
 	port_buttons.clear()
 	
-	buttons = buttons.filter(func(btn): return btn.name == "ReturnButton" or btn.name == "ScanButton")
+	# Keep all initial buttons (ScanButton and ReturnButton)
+	buttons = buttons.filter(func(btn): return btn.name == "ScanButton" or btn.name == "ReturnButton")
 	current_index = 0
 	
 	for port_data in available_ports.values():
@@ -58,8 +48,8 @@ func create_port_buttons() -> void:
 		buttons.append(port_button)
 	
 	if buttons.size() > 0:
-		buttons[1].grab_focus()
-		current_index = 1
+		buttons[0].grab_focus()
+		current_index = 0
 
 func connect_to_port(port: String) -> void:
 	LedMatrixManager.stop_syncing()

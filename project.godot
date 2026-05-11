@@ -24,6 +24,7 @@ config/icon="res://icon.svg"
 
 TileManager="*res://Managers/tile_manager.gd"
 LedMatrixManager="*res://Managers/led_matrix_manager.gd"
+SelectionManager="*res://Managers/selection_manager.gd"
 
 [debug]
 

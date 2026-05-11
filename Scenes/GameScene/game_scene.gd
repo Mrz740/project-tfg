@@ -4,15 +4,24 @@ extends Node2D
 @onready var hbox_container: HBoxContainer = $ColorRect/HBoxContainer
 
 @export var powerup_spawn_interval: float = 5.0  # Spawn a powerup every 5 seconds
+
 var powerup_types: Array[String] = ["heal", "big_bomb", "shield"]
 var spawn_timer: Timer
+var player1_spawn_point: Vector2 = Vector2(2, 62)
+var player2_spawn_point: Vector2 = Vector2(62, 10)
 
 func _ready():
 	TileManager.background_tilemap = $BackgroundTile
 	TileManager.destructible_tilemap = $DestructibleTile
 	
+	# Get players and apply selected sprites
+	var players = get_tree().get_nodes_in_group("players")
+	for i in range(players.size()):
+		if i < 2:  # Only apply for first 2 players
+			players[i].texture = SelectionManager.get_player_sprite(i)
+	
 	# Create health counters for each player
-	for player in get_tree().get_nodes_in_group("players"):
+	for player in players:
 		var health_counter: HealthCounter = health_counter_scene.instantiate()
 		hbox_container.add_child(health_counter)
 		health_counter.initialize(player.max_hp, player.texture)

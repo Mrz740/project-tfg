@@ -28,15 +28,21 @@ func _input(event: InputEvent) -> void:
 			get_tree().change_scene_to_file(parent_scene)
 		return
 	
+	# Consume arrow keys to prevent default focus behavior
+	if event is InputEventKey and event.pressed:
+		match event.keycode:
+			KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT:
+				get_tree().root.set_input_as_handled()
+	
 	if buttons.is_empty():
 		return
-	if event.is_action_pressed("p1_up"):
+	if event.is_action_pressed("p1_up") or event.is_action_pressed("p2_up"):
 		current_index = wrapi(current_index - 1, 0, buttons.size())
 		buttons[current_index].grab_focus()
-	elif event.is_action_pressed("p1_down"):
+	elif event.is_action_pressed("p1_down") or event.is_action_pressed("p2_down"):
 		current_index = wrapi(current_index + 1, 0, buttons.size())
 		buttons[current_index].grab_focus()
-	elif event.is_action_pressed("p1_bomb"):
+	elif event.is_action_pressed("p1_bomb") or event.is_action_pressed("p2_bomb"):
 		execute_button(buttons[current_index].name)
 
 func execute_button(_button_name: String) -> void:

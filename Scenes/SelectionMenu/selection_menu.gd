@@ -83,7 +83,7 @@ func _update_displays() -> void:
 	for i in range(2):
 		var player_data = players[i]
 		player_sprites[i].frame = player_data.selected_frame
-		player_locks[i].frame = player_data.selected_frame
+		# Don't set frame for lock sprite since it's a single image
 
 func _check_conflict() -> void:
 	conflict_sprite.visible = players[0].selected_frame == players[1].selected_frame
@@ -112,4 +112,6 @@ func _update_cooldown_display() -> void:
 		cooldown_pixels[i].visible = i < pixels_active
 
 func _transition_to_map_selection() -> void:
-	get_tree().change_scene_to_file("res://Scenes/SelectionMenu/MapSelectionMenu.tscn")
+	# Store player selections in SelectionManager before transitioning
+	SelectionManager.set_selections(players[0].selected_frame, players[1].selected_frame)
+	get_tree().change_scene_to_file("res://Scenes/GameScene/GameScene.tscn")

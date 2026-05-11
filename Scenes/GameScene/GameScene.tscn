@@ -40,10 +40,10 @@ tile_set = SubResource("TileSet_7rqgy")
 autostart = true
 
 [node name="Player" parent="." unique_id=281422011 instance=ExtResource("4_qxria")]
-position = Vector2(22, 22)
+position = Vector2(2, 62)
 
 [node name="Player2" parent="." unique_id=2036850441 instance=ExtResource("4_qxria")]
-position = Vector2(42, 22)
+position = Vector2(62, 10)
 texture = ExtResource("4_y4jh7")
 player_id = 2
 
