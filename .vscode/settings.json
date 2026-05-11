@@ -1,3 +1,9 @@
 {
-    "godotTools.editorPath.godot4": "c:\\GodotProjects\\project-tfg\\ProjectTFG.exe"
+    "godotTools.editorPath.godot4": "c:\\GodotProjects\\project-tfg\\ProjectTFG.exe",
+    "files.exclude": {
+        "**/*.gd.uid": true,
+        "**/*.tmp": true,
+        "**/*.gd.uid.*": true,
+        "**/*.tmp.*": true
+    }
 }

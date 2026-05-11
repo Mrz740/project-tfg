@@ -34,7 +34,6 @@ position = Vector2(15, -3)
 scale = Vector2(4, 4)
 texture = ExtResource("3_vbl5a")
 hframes = 4
-frame = 1
 
 [node name="Player2Lock" type="Sprite2D" parent="Background/Player2Container" unique_id=1234567804]
 visible = false
@@ -48,12 +47,45 @@ texture = ExtResource("5_vbl5a")
 
 [node name="Timer" type="Timer" parent="." unique_id=1234567806]
 
-[node name="CooldownLabel" type="Label" parent="." unique_id=1234567807]
-offset_left = 32.0
-offset_top = 50.0
-offset_right = 32.0
-offset_bottom = 50.0
-horizontal_alignment = 1
+[node name="Pixel1" type="ColorRect" parent="." unique_id=2012740898]
+visible = false
+offset_left = 25.0
+offset_top = 12.0
+offset_right = 27.0
+offset_bottom = 14.0
+color = Color(1, 0, 0, 1)
+
+[node name="Pixel2" type="ColorRect" parent="." unique_id=1072680151]
+visible = false
+offset_left = 28.0
+offset_top = 12.0
+offset_right = 30.0
+offset_bottom = 14.0
+color = Color(1, 0, 0, 1)
+
+[node name="Pixel3" type="ColorRect" parent="." unique_id=1122941167]
+visible = false
+offset_left = 31.0
+offset_top = 12.0
+offset_right = 33.0
+offset_bottom = 14.0
+color = Color(1, 0, 0, 1)
+
+[node name="Pixel4" type="ColorRect" parent="." unique_id=1920318561]
+visible = false
+offset_left = 34.0
+offset_top = 12.0
+offset_right = 36.0
+offset_bottom = 14.0
+color = Color(1, 0, 0, 1)
+
+[node name="Pixel5" type="ColorRect" parent="." unique_id=1265206210]
+visible = false
+offset_left = 37.0
+offset_top = 12.0
+offset_right = 39.0
+offset_bottom = 14.0
+color = Color(1, 0, 0, 1)
 
 [node name="Label" type="Label" parent="." unique_id=241787491]
 offset_left = 6.0

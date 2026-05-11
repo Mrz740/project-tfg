@@ -1,17 +1,10 @@
 extends Node2D
 
-const AVAILABLE_SPRITES: Array[String] = [
-	"res://Player/PlayerSprites/player_sprite1.png",
-	"res://Player/PlayerSprites/player_sprite2.png",
-	"res://Player/PlayerSprites/player_sprite3.png",
-	"res://Player/PlayerSprites/player_sprite4.png"
-]
 const SPRITE_FRAMES: int = 4
-const COOLDOWN_TIME: float = 3.0
+const COUNTDOWN_TIME: float = 5.0
 
 # Player data structure
 class PlayerState:
-	var selected_sprite: int = 0
 	var selected_frame: int = 0
 	var locked: bool = false
 
@@ -28,14 +21,20 @@ var players: Array[PlayerState] = [PlayerState.new(), PlayerState.new()]
 ]
 @onready var conflict_sprite: Sprite2D = $Background/ConflictSprite
 @onready var timer: Timer = $Timer
-@onready var cooldown_label: Label = $CooldownLabel
+@onready var cooldown_pixels: Array[ColorRect] = [
+	$Pixel1,
+	$Pixel2,
+	$Pixel3,
+	$Pixel4,
+	$Pixel5
+]
 
-var remaining_time: float = 0.0
+var pixels_active: int = 0
 var conflict_warning_shown: bool = false
 
 func _ready() -> void:
-	players[0].selected_sprite = 0
-	players[1].selected_sprite = 1
+	players[0].selected_frame = 0
+	players[1].selected_frame = 1
 	_update_displays()
 	_check_conflict()
 	timer.timeout.connect(_on_timer_timeout)
@@ -70,12 +69,21 @@ func _move_player(player: int, direction: int) -> void:
 func _toggle_lock(player: int) -> void:
 	players[player].locked = !players[player].locked
 	player_locks[player].visible = players[player].locked
+	
+	# If unlocking, reset cooldown
+	if not players[player].locked:
+		if timer.is_stopped() == false:
+			timer.stop()
+		pixels_active = 0
+		_update_cooldown_display()
+	
 	_check_both_locked()
 
 func _update_displays() -> void:
 	for i in range(2):
 		var player_data = players[i]
 		player_sprites[i].frame = player_data.selected_frame
+		player_locks[i].frame = player_data.selected_frame
 
 func _check_conflict() -> void:
 	conflict_sprite.visible = players[0].selected_frame == players[1].selected_frame
@@ -87,18 +95,21 @@ func _check_both_locked() -> void:
 
 # Start cooldown timer
 func _start_cooldown() -> void:
-	remaining_time = COOLDOWN_TIME
-	cooldown_label.text = str(int(ceil(remaining_time))) + "s"
-	timer.start(0.1)
+	pixels_active = cooldown_pixels.size()
+	_update_cooldown_display()
+	timer.start(COUNTDOWN_TIME / cooldown_pixels.size())  # Divide cooldown evenly
 
 func _on_timer_timeout() -> void:
-	remaining_time -= 0.1
-	cooldown_label.text = str(int(ceil(remaining_time))) + "s"
-	
-	if remaining_time <= 0.0:
-		timer.stop()
-		cooldown_label.text = ""
-		_transition_to_map_selection()
+	if pixels_active > 0:
+		pixels_active -= 1
+		_update_cooldown_display()
+		if pixels_active == 0:
+			timer.stop()
+			_transition_to_map_selection()
+
+func _update_cooldown_display() -> void:
+	for i in range(cooldown_pixels.size()):
+		cooldown_pixels[i].visible = i < pixels_active
 
 func _transition_to_map_selection() -> void:
 	get_tree().change_scene_to_file("res://Scenes/SelectionMenu/MapSelectionMenu.tscn")
