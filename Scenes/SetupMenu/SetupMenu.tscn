@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://k0tn02ryowqi" path="res://Scenes/SetupMenu/setup_menu.gd" id="1_whl3v"]
 [ext_resource type="FontFile" uid="uid://byke0i2614qob" path="res://Scenes/5x5_pixel.ttf" id="2_1qmg6"]
 [ext_resource type="Texture2D" uid="uid://b087a7o2vm2ds" path="res://Scenes/SetupMenu/setup_menu_sprite.png" id="2_8xonq"]
-[ext_resource type="PackedScene" uid="uid://ctiyvx6luhh5d" path="res://Scenes/ReturnButton.tscn" id="3_8xonq"]
 [ext_resource type="Theme" uid="uid://by7xn6lx6ov6m" path="res://Scenes/button_theme.tres" id="4_cqnhd"]
 
 [node name="SetupMenu" type="Node2D" unique_id=167926229]
@@ -32,9 +31,6 @@ offset_top = 4.0
 offset_right = 110.0
 offset_bottom = 44.0
 scale = Vector2(0.5, 0.5)
-
-[node name="ReturnButton" parent="VBoxContainer" unique_id=213131517 instance=ExtResource("3_8xonq")]
-layout_mode = 2
 
 [node name="ScanButton" type="Button" parent="VBoxContainer" unique_id=1763960561]
 layout_mode = 2

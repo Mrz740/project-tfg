@@ -21,7 +21,7 @@ tile_size = Vector2i(4, 4)
 physics_layer_0/collision_layer = 1
 sources/2 = SubResource("TileSetAtlasSource_nhkr4")
 
-[node name="MainScene" type="Node2D" unique_id=1585945340]
+[node name="GameScene" type="Node2D" unique_id=1585945340]
 script = ExtResource("1_qxria")
 
 [node name="BackgroundTile" type="TileMapLayer" parent="." unique_id=107745201]

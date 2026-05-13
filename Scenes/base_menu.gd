@@ -10,7 +10,6 @@ func _ready() -> void:
 	vbox = get_node_or_null("VBoxContainer")
 	if vbox == null:
 		return
-	
 	for child in vbox.get_children():
 		if child is Control:
 			child.mouse_filter = Control.MOUSE_FILTER_IGNORE

@@ -14,15 +14,12 @@ func try_connect_led(port: String, baud_rate: int) -> bool:
 	serial.set_port(port)
 	serial.set_baud_rate(baud_rate)
 	var connected :bool = serial.open()
-	connected = connected and call_deferred("_initialize")
 	return connected
 
-func _initialize() -> bool:
-	await get_tree().process_frame
-	last_frame = PackedByteArray()
-	return serial.write([255, 255, 0, 0, 0])
-
 func start_syncing() -> void:
+	await get_tree().process_frame
+	last_frame = get_viewport().get_texture().get_image().get_data()
+	serial.write([255, 255, 0, 0, 0])
 	syncing = true
 
 func stop_syncing() -> void:
@@ -36,31 +33,32 @@ func clear_display() -> void:
 func _process(_delta):
 	if not syncing or not serial.is_open():
 		return
-	
-	var viewport = get_viewport()
-	if not viewport:
+
+	await RenderingServer.frame_post_draw
+
+	var img = get_viewport().get_texture().get_image()
+
+	if img.is_empty():
 		return
-	
-	var img = viewport.get_texture().get_image()
-	img.resize(W, H)
+		
+	img.resize(W, H, Image.INTERPOLATE_NEAREST)
 	img.convert(Image.FORMAT_RGB8)
 
 	var data: PackedByteArray = img.get_data()
-
-	if last_frame.size() != data.size():
+	
+	if last_frame.is_empty():
 		last_frame = data.duplicate()
 		return
 
 	for i in range(0, data.size(), 3):
-		var r = data[i]
-		var g = data[i + 1]
-		var b = data[i + 2]
+		var rgb = (data[i] << 16) | (data[i + 1] << 8) | data[i + 2]
+		var last_rgb = (last_frame[i] << 16) | (last_frame[i + 1] << 8) | last_frame[i + 2]
 
-		var lr = last_frame[i]
-		var lg = last_frame[i + 1]
-		var lb = last_frame[i + 2]
+		if rgb != last_rgb:
+			var r = (rgb >> 16) & 0xFF
+			var g = (rgb >> 8) & 0xFF
+			var b = rgb & 0xFF
 
-		if r != lr or g != lg or b != lb:
 			var pixel_index = i / 3
 			var x = int(pixel_index % W)
 			var y = int(pixel_index / W)
