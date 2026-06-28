@@ -12,6 +12,10 @@ const SPRITE_PATHS: Array[String] = [
 var player1_selected_frame: int = 0
 var player2_selected_frame: int = 0
 
+# Store winner information
+var winner_player_id: int = 0
+var winner_sprite: Texture2D = null
+
 func get_player_sprite(player: int) -> Texture2D:
 	var frame = player1_selected_frame if player == 0 else player2_selected_frame
 	return load(SPRITE_PATHS[frame])

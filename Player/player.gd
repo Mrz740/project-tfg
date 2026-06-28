@@ -10,7 +10,7 @@ const RIGHT := Vector2(1,0)
 @onready var bomb_scene: PackedScene = preload("res://Bomb/Bomb.tscn")
 
 @export var player_id :int= 1
-@export var max_hp :int= 3
+@export var max_hp :int= 1
 
 var bomb_cooldown :float= 1.5
 var bomb_ready: bool = true
@@ -143,6 +143,25 @@ func update_flashing(delta: float) -> void:
 func die() -> void:
 	visible = false
 	remove_from_group("players")
+	
+	var all_players = get_tree().get_nodes_in_group("players")
+	var winner_player: Player = null
+	
+	for player in all_players:
+		if player != self:
+			winner_player = player
+			break
+	
+	if winner_player:
+		SelectionManager.winner_player_id = winner_player.player_id
+		SelectionManager.winner_sprite = winner_player.texture
+		print("[Player] Player ", player_id, " died! Player ", winner_player.player_id, " wins!")
+	else:
+		print("[Player] Player ", player_id, " died! No winner found (draw?)")
+
+	clear_scene()
+	await get_tree().create_timer(0.01).timeout  # Short delay before transitioning to winner screen
+	get_tree().change_scene_to_file("res://Scenes/WinnerMenu/WinnerMenu.tscn")
 
 func heal(amount: int) -> void:
 	current_hp = min(current_hp + amount, max_hp)
@@ -157,5 +176,9 @@ func heal(amount: int) -> void:
 
 func apply_shield() -> void:
 	has_shield = true
-	modulate = Color(0.0, 1.13, 18.892)  # Make player blue when shielded
+	modulate = Color(0.0, 1.13, 18.892)  # Blue
 
+func clear_scene():
+	for child in get_tree().current_scene.get_children():
+		if child != self:
+			child.queue_free()

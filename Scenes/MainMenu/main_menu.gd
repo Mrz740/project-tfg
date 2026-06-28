@@ -12,4 +12,4 @@ func _ready() -> void:
 func execute_button(button_name: String) -> void:
 	if button_name in menu_scenes:
 		var scene_path = menu_scenes[button_name]
-		get_tree().change_scene_to_file(scene_path)
+		_change_scene_with_led_sync(scene_path)

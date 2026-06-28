@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://plafwwry0t0r"]
+
+[ext_resource type="Script" uid="uid://dem6rr8h5dftl" path="res://Scenes/WinnerMenu/winner_menu.gd" id="1_winner"]
+[ext_resource type="Texture2D" uid="uid://b00vjdsfncw22" path="res://Scenes/WinnerMenu/WinnerMenuSprite.png" id="2_317y3"]
+[ext_resource type="FontFile" uid="uid://byke0i2614qob" path="res://Scenes/5x5_pixel.ttf" id="2_krphr"]
+[ext_resource type="Theme" uid="uid://by7xn6lx6ov6m" path="res://Scenes/button_theme.tres" id="2_theme"]
+[ext_resource type="Texture2D" uid="uid://doc06yr15iqlp" path="res://Player/PlayerSprites/player_sprite1.png" id="3_317y3"]
+
+[node name="WinnerMenu" type="Node2D" unique_id=1767523306]
+script = ExtResource("1_winner")
+
+[node name="BackgroundSprite" type="Sprite2D" parent="." unique_id=957214218]
+position = Vector2(32, 32)
+texture = ExtResource("2_317y3")
+
+[node name="WinnerLabel" type="Label" parent="." unique_id=971353074]
+offset_top = 5.0
+offset_right = 128.0
+offset_bottom = 41.0
+scale = Vector2(0.5, 0.5)
+theme_override_fonts/font = ExtResource("2_krphr")
+text = "PLAYER 1
+WINS!"
+horizontal_alignment = 1
+
+[node name="WinnerSprite" type="Sprite2D" parent="." unique_id=1984354564]
+position = Vector2(32, 28)
+texture = ExtResource("3_317y3")
+hframes = 4
+frame = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1901872198]
+offset_left = 6.0
+offset_top = 36.0
+offset_right = 112.0
+offset_bottom = 76.0
+scale = Vector2(0.5, 0.5)
+
+[node name="ReplayButton" type="Button" parent="VBoxContainer" unique_id=534507160]
+layout_mode = 2
+theme = ExtResource("2_theme")
+text = "REPLAY"
+
+[node name="MainMenuButton" type="Button" parent="VBoxContainer" unique_id=666598929]
+layout_mode = 2
+theme = ExtResource("2_theme")
+text = "MAIN MENU"

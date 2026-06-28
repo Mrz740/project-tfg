@@ -18,13 +18,44 @@ func try_connect_led(port: String, baud_rate: int) -> bool:
 
 func start_syncing() -> void:
 	await get_tree().process_frame
-	last_frame = get_viewport().get_texture().get_image().get_data()
+	# Empezamos con un buffer "todo negro" en vez de uno vacío, así el
+	# primer frame real se compara contra negro y se envía completo,
+	# en lugar de adoptarse silenciosamente como línea base sin transmitir
+	# nada (ver nota en force_full_sync más abajo).
+	last_frame = PackedByteArray()
+	last_frame.resize(W * H * 3)
 	serial.write([255, 255, 0, 0, 0])
 	syncing = true
 
 func stop_syncing() -> void:
 	syncing = false
 	clear_display()
+
+func force_full_sync() -> void:
+	"""Force a full frame sync: sends a real clearScreen command to the
+	ESP32 (so the physical panel actually goes blank) AND resets the local
+	diffing buffer to an explicit all-black frame (not an empty array).
+
+	Why all-black and not empty: _process() treats an EMPTY last_frame as
+	"no baseline yet" and silently adopts whatever is on screen at that
+	moment as the new baseline, WITHOUT sending it over serial (see the
+	`if last_frame.is_empty(): ... return` guard in _process). Since
+	change_scene_to_file() is deferred (not instant), that very first
+	_process() call after a scene change can already be looking at the
+	FULLY-RENDERED new menu — meaning the entire new menu gets silently
+	swallowed as "baseline" and never actually transmitted, which is
+	exactly the bug where only pixels that change afterwards (e.g. button
+	focus highlight) show up on the panel.
+
+	Using an explicit all-black buffer instead of an empty one means the
+	diffing loop always runs as a real comparison from the very first
+	frame, so the complete new menu is correctly detected as "changed from
+	black" and sent in full."""
+	print("[LED] Force full sync - clearing physical panel and frame buffer")
+	if serial.is_open():
+		serial.write([255, 255, 0, 0, 0])
+	last_frame = PackedByteArray()
+	last_frame.resize(W * H * 3)
 
 func clear_display() -> void:
 	if serial.is_open():

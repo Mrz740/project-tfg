@@ -1,7 +1,7 @@
 extends Node2D
 
 const SPRITE_FRAMES: int = 4
-const COUNTDOWN_TIME: float = 5.0
+const COUNTDOWN_TIME: float = 3
 
 # Player data structure
 class PlayerState:
@@ -41,7 +41,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("return"):
-		get_tree().change_scene_to_file("res://Scenes/MainMenu/MainMenu.tscn")
+		_change_scene_with_led_sync("res://Scenes/MainMenu/MainMenu.tscn")
 		return
 	
 	if event.is_action_pressed("p1_left"):
@@ -114,4 +114,13 @@ func _update_cooldown_display() -> void:
 func _transition_to_map_selection() -> void:
 	# Store player selections in SelectionManager before transitioning
 	SelectionManager.set_selections(players[0].selected_frame, players[1].selected_frame)
-	get_tree().change_scene_to_file("res://Scenes/GameScene/GameScene.tscn")
+	_change_scene_with_led_sync("res://Scenes/GameScene/GameScene.tscn")
+
+func _change_scene_with_led_sync(scene_path: String) -> void:
+	"""Change scene with LED sync to ensure all pixels are sent."""
+	if has_node("/root/LedMatrixManager"):
+		var led_manager = get_node("/root/LedMatrixManager")
+		if led_manager and led_manager.serial and led_manager.serial.is_open():
+			print("[SelectionMenu] LED connected - forcing full sync before scene change")
+			led_manager.force_full_sync()
+	get_tree().change_scene_to_file(scene_path)

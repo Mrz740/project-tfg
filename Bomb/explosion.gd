@@ -1,5 +1,7 @@
 extends Sprite2D
 
+class_name Explosion
+
 @export var tile_delay := 0.05
 @export var piece_lifetime := 0.3
 @onready var explosion_texture: Texture2D = preload("res://Bomb/explosion.png")

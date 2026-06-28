@@ -24,7 +24,7 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("return"):
 		if parent_scene != "":
-			get_tree().change_scene_to_file(parent_scene)
+			_change_scene_with_led_sync(parent_scene)
 		return
 	
 	# Consume arrow keys to prevent default focus behavior
@@ -46,3 +46,12 @@ func _input(event: InputEvent) -> void:
 
 func execute_button(_button_name: String) -> void:
 	pass
+
+func _change_scene_with_led_sync(scene_path: String) -> void:
+	"""Change scene with LED sync to ensure all pixels are sent."""
+	if has_node("/root/LedMatrixManager"):
+		var led_manager = get_node("/root/LedMatrixManager")
+		if led_manager and led_manager.serial and led_manager.serial.is_open():
+			print("[BaseMenu] LED connected - forcing full sync before scene change")
+			led_manager.force_full_sync()
+	get_tree().change_scene_to_file(scene_path)
