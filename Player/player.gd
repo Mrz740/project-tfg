@@ -5,12 +5,13 @@ const UP := Vector2(0,-1)
 const DOWN := Vector2(0,1)
 const LEFT := Vector2(-1,0)
 const RIGHT := Vector2(1,0)
+const BIG_BOMB_RADIUS := int(5)
 
 @onready var bombTimer: Timer = $BombCooldown
 @onready var bomb_scene: PackedScene = preload("res://Bomb/Bomb.tscn")
 
 @export var player_id :int= 1
-@export var max_hp :int= 1
+@export var max_hp :int= 3
 
 var bomb_cooldown :float= 1.5
 var bomb_ready: bool = true
@@ -28,6 +29,8 @@ var health_counter: HealthCounter
 
 var has_shield: bool = false
 var has_big_bomb: bool = false
+
+static var _round_ending := false
 
 func _init():
 	current_hp = max_hp
@@ -85,10 +88,10 @@ func drop_bomb() -> void:
 	bombInst.global_position = get_snapped_position(global_position)
 	
 	if has_big_bomb:
-		bombInst.radius = 5  # Big bomb has larger radius
+		bombInst.radius = BIG_BOMB_RADIUS
 		has_big_bomb = false
 	else:
-		bombInst.radius = 2  # Normal bomb radius
+		bombInst.radius = 2
 	
 	bombInst.activate_bomb()
 	bomb_ready = false
@@ -100,7 +103,7 @@ func _on_timer_timeout() -> void:
 func take_damage(damage: int) -> void:
 	if has_shield:
 		has_shield = false
-		modulate = Color.WHITE  # Reset color to normal
+		modulate = Color.WHITE
 		return
 	
 	if invincible:
@@ -141,6 +144,10 @@ func update_flashing(delta: float) -> void:
 		visible = true
 		
 func die() -> void:
+	if _round_ending:
+		return
+	_round_ending = true
+
 	visible = false
 	remove_from_group("players")
 	
@@ -159,14 +166,11 @@ func die() -> void:
 	else:
 		print("[Player] Player ", player_id, " died! No winner found (draw?)")
 
-	clear_scene()
-	await get_tree().create_timer(0.01).timeout  # Short delay before transitioning to winner screen
-	get_tree().change_scene_to_file("res://Scenes/WinnerMenu/WinnerMenu.tscn")
+	_change_scene_with_led_sync("res://Scenes/WinnerMenu/WinnerMenu.tscn")
 
 func heal(amount: int) -> void:
 	current_hp = min(current_hp + amount, max_hp)
 	if health_counter:
-		# Recreate health display to show new HP
 		health_counter.clear_display()
 		for i in range(current_hp):
 			var color_rect = ColorRect.new()
@@ -178,7 +182,13 @@ func apply_shield() -> void:
 	has_shield = true
 	modulate = Color(0.0, 1.13, 18.892)  # Blue
 
-func clear_scene():
-	for child in get_tree().current_scene.get_children():
-		if child != self:
-			child.queue_free()
+func _change_scene_with_led_sync(scene_path: String) -> void:
+	"""Change scene with LED sync to ensure all pixels are sent.
+	Mirrors the same helper used in base_menu.gd / selection_menu.gd, since
+	Player does not inherit from BaseMenu and can't reuse it directly."""
+	if has_node("/root/LedMatrixManager"):
+		var led_manager = get_node("/root/LedMatrixManager")
+		if led_manager and led_manager.serial and led_manager.serial.is_open():
+			print("[Player] LED connected - forcing full sync before scene change")
+			led_manager.force_full_sync()
+	get_tree().change_scene_to_file(scene_path)

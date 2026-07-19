@@ -17,6 +17,6 @@ func _ready() -> void:
 func execute_button(button_name: String) -> void:
 	match button_name:
 		"ReplayButton":
-			get_tree().change_scene_to_file("res://Scenes/SelectionMenu/SelectionMenu.tscn")
+			_change_scene_with_led_sync("res://Scenes/SelectionMenu/SelectionMenu.tscn")
 		"MainMenuButton":
-			get_tree().change_scene_to_file("res://Scenes/MainMenu/MainMenu.tscn")
+			_change_scene_with_led_sync("res://Scenes/MainMenu/MainMenu.tscn")

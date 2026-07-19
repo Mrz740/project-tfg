@@ -24,8 +24,17 @@ func execute_button(button_name: String) -> void:
 				connect_to_port(port_name)
 
 func scan_ports() -> void:
-	available_ports = LedMatrixManager.get_open_ports()
+	available_ports = filter_usb_ports(LedMatrixManager.get_open_ports())
 	create_port_buttons()
+
+func filter_usb_ports(ports: Dictionary) -> Dictionary:
+	var usb_ports: Dictionary = {}
+	for key in ports:
+		var port_data = ports[key]
+		var port_type = port_data.get("port_type", "") if port_data is Dictionary else ""
+		if port_type.begins_with("USB"):
+			usb_ports[key] = port_data
+	return usb_ports
 
 func create_port_buttons() -> void:
 	for btn in port_buttons:

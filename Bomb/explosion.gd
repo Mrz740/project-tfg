@@ -24,8 +24,11 @@ func start(origin: Vector2, radius: int) -> void:
 	for dir in directions:
 		propagate(center_tile, dir, radius)
 
+	if not is_inside_tree():
+		return
 	await get_tree().create_timer(piece_lifetime + tile_delay * radius).timeout
-	queue_free()
+	if is_instance_valid(self) and is_inside_tree():
+		queue_free()
 
 
 func propagate(origin_tile: Vector2i, dir: Vector2, radius: int) -> void:
@@ -33,16 +36,22 @@ func propagate(origin_tile: Vector2i, dir: Vector2, radius: int) -> void:
 		var next_tile = origin_tile + Vector2i(int(dir.x * i), int(dir.y * i))
 		var world_pos = tile_to_world(next_tile)
 
+		if not is_inside_tree():
+			return
 		await get_tree().create_timer(tile_delay).timeout
 
+		if not is_inside_tree():
+			return
 		spawn_piece(world_pos)
 		TileManager.destroy_tile_at(next_tile, dir)
-		
+
 		if TileManager.is_explosion_blocked(world_pos):
 			break
 
 
 func spawn_piece(world_pos: Vector2) -> void:
+	if not is_inside_tree():
+		return
 	var sprite = Sprite2D.new()
 	sprite.texture = explosion_texture
 	sprite.global_position = world_pos
@@ -52,8 +61,11 @@ func spawn_piece(world_pos: Vector2) -> void:
 	var tween = create_tween()
 	tween.tween_property(sprite, "scale", Vector2.ONE, 0.1)
 
+	if not is_inside_tree():
+		return
 	await get_tree().create_timer(piece_lifetime).timeout
-	sprite.queue_free()
+	if is_instance_valid(sprite):
+		sprite.queue_free()
 
 
 func tile_to_world(tile: Vector2i) -> Vector2:

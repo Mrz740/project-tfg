@@ -11,9 +11,10 @@ var player1_spawn_point: Vector2 = Vector2(2, 62)
 var player2_spawn_point: Vector2 = Vector2(62, 10)
 
 func _ready():
+	Player._round_ending = false
 	TileManager.background_tilemap = $BackgroundTile
 	TileManager.destructible_tilemap = $DestructibleTile
-	
+
 	# Get players and apply selected sprites
 	var players = get_tree().get_nodes_in_group("players")
 	for i in range(players.size()):
