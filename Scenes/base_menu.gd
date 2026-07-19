@@ -48,10 +48,8 @@ func execute_button(_button_name: String) -> void:
 	pass
 
 func _change_scene_with_led_sync(scene_path: String) -> void:
-	"""Change scene with LED sync to ensure all pixels are sent."""
-	if has_node("/root/LedMatrixManager"):
-		var led_manager = get_node("/root/LedMatrixManager")
-		if led_manager and led_manager.serial and led_manager.serial.is_open():
-			print("[BaseMenu] LED connected - forcing full sync before scene change")
-			led_manager.force_full_sync()
+	"""Change scene. The LED matrix's frame diffing keeps running across
+	the scene change (LedMatrixManager is an autoload, unaffected by the
+	scene swap), so it naturally sends only the pixels that actually
+	differ between the old and new scene instead of a forced full resend."""
 	get_tree().change_scene_to_file(scene_path)

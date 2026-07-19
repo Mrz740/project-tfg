@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dlr7c5tely0db" path="res://Scenes/MainMenu/main_menu.gd" id="1_sg7ab"]
 [ext_resource type="Texture2D" uid="uid://cj488uwcahxju" path="res://Scenes/MainMenu/main_menu_sprite.png" id="2_kpx3y"]
 [ext_resource type="Theme" uid="uid://by7xn6lx6ov6m" path="res://Scenes/button_theme.tres" id="3_ua038"]
+[ext_resource type="FontFile" uid="uid://byke0i2614qob" path="res://Scenes/5x5_pixel.ttf" id="4_quitfont"]
 
 [node name="MainMenu" type="Node2D" unique_id=318106880]
 script = ExtResource("1_sg7ab")
@@ -27,3 +28,21 @@ text = "PLAY"
 layout_mode = 2
 theme = ExtResource("3_ua038")
 text = "SETUP"
+
+[node name="QuitOverlay" type="ColorRect" parent="." unique_id=782341009]
+visible = false
+offset_right = 64.0
+offset_bottom = 64.0
+mouse_filter = 2
+color = Color(0, 0, 0, 0.65)
+
+[node name="QuitConfirmLabel" type="Label" parent="." unique_id=-1202149932]
+visible = false
+offset_left = 1.0
+offset_top = 21.0
+offset_right = 129.0
+offset_bottom = 44.0
+scale = Vector2(0.5, 0.5)
+theme_override_fonts/font = ExtResource("4_quitfont")
+text = "ESC: SALIR"
+horizontal_alignment = 1

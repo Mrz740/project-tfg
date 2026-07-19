@@ -28,13 +28,6 @@ func _ready():
 		health_counter.initialize(player.max_hp, player.texture)
 		player.health_counter = health_counter
 	
-	# Force LED sync when game loads
-	if has_node("/root/LedMatrixManager"):
-		var led_manager = get_node("/root/LedMatrixManager")
-		if led_manager and led_manager.serial and led_manager.serial.is_open():
-			print("[GameScene] LED connected - forcing full sync on game load")
-			led_manager.force_full_sync()
-	
 	# Setup powerup spawn timer
 	spawn_timer = Timer.new()
 	add_child(spawn_timer)
