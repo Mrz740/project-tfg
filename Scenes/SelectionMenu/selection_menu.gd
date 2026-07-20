@@ -34,6 +34,7 @@ var conflict_warning_shown: bool = false
 
 func _ready() -> void:
 	parent_scene = "res://Scenes/MainMenu/MainMenu.tscn"
+	SoundManager.play_music("menu")
 	players[0].selected_frame = 0
 	players[1].selected_frame = 1
 	_update_displays()
@@ -42,6 +43,7 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("return"):
+		SoundManager.play_sfx("menu_select")
 		_change_scene_with_led_sync(parent_scene)
 		return
 	
@@ -66,10 +68,12 @@ func _move_player(player: int, direction: int) -> void:
 	players[player].selected_frame = wrapi(players[player].selected_frame + direction, 0, SPRITE_FRAMES)
 	_update_displays()
 	_check_conflict()
+	SoundManager.play_sfx("menu_move")
 
 func _toggle_lock(player: int) -> void:
 	players[player].locked = !players[player].locked
 	player_locks[player].visible = players[player].locked
+	SoundManager.play_sfx("menu_select")
 	
 	# If unlocking, reset cooldown
 	if not players[player].locked:
@@ -104,6 +108,7 @@ func _on_timer_timeout() -> void:
 	if pixels_active > 0:
 		pixels_active -= 1
 		_update_cooldown_display()
+		SoundManager.play_sfx("countdown_tick")
 		if pixels_active == 0:
 			timer.stop()
 			_transition_to_map_selection()

@@ -22,6 +22,7 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	for player in get_tree().get_nodes_in_group(player_group):
 		if global_position.distance_to(player.global_position) < pickup_distance:
+			SoundManager.play_sfx("powerup_pickup")
 			apply(player)
 			queue_free()
 			return

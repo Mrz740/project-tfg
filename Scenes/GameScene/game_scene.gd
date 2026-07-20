@@ -11,6 +11,7 @@ var player1_spawn_point: Vector2 = Vector2(2, 62)
 var player2_spawn_point: Vector2 = Vector2(62, 10)
 
 func _ready():
+	SoundManager.play_music("gameplay")
 	Player._round_ending = false
 	TileManager.background_tilemap = $BackgroundTile
 	TileManager.destructible_tilemap = $DestructibleTile

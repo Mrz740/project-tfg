@@ -24,6 +24,7 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("return"):
 		if parent_scene != "":
+			SoundManager.play_sfx("menu_select")
 			_change_scene_with_led_sync(parent_scene)
 		return
 	
@@ -38,10 +39,13 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("p1_up") or event.is_action_pressed("p2_up"):
 		current_index = wrapi(current_index - 1, 0, buttons.size())
 		buttons[current_index].grab_focus()
+		SoundManager.play_sfx("menu_move")
 	elif event.is_action_pressed("p1_down") or event.is_action_pressed("p2_down"):
 		current_index = wrapi(current_index + 1, 0, buttons.size())
 		buttons[current_index].grab_focus()
+		SoundManager.play_sfx("menu_move")
 	elif event.is_action_pressed("p1_bomb") or event.is_action_pressed("p2_bomb"):
+		SoundManager.play_sfx("menu_select")
 		execute_button(buttons[current_index].name)
 
 func execute_button(_button_name: String) -> void:

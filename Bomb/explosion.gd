@@ -7,6 +7,7 @@ class_name Explosion
 @onready var explosion_texture: Texture2D = preload("res://Bomb/explosion.png")
 
 func start(origin: Vector2, radius: int) -> void:
+	SoundManager.play_sfx("explosion")
 	var center_tile = Vector2i(
 		int(origin.x / TileManager.tile_size),
 		int(origin.y / TileManager.tile_size)

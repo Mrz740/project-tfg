@@ -13,6 +13,7 @@ var quit_confirm_pending: bool = false
 func _ready() -> void:
 	parent_scene = ""  # MainMenu is the entry point, no parent
 	super._ready()
+	SoundManager.play_music("menu")
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("return"):

@@ -96,6 +96,7 @@ func drop_bomb() -> void:
 	bombInst.activate_bomb()
 	bomb_ready = false
 	bombTimer.start(bomb_cooldown)
+	SoundManager.play_sfx("bomb_place")
 
 func _on_timer_timeout() -> void:
 	bomb_ready = true
@@ -112,10 +113,11 @@ func take_damage(damage: int) -> void:
 	current_hp -= damage
 	if health_counter:
 		health_counter.remove_hp()
-	
+
 	if current_hp <= 0:
 		die()
 		return
+	SoundManager.play_sfx("player_hurt")
 	invincible = true
 
 	flash_elapsed = 0.0

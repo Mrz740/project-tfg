@@ -6,7 +6,8 @@ extends BaseMenu
 func _ready() -> void:
 	parent_scene = "res://Scenes/MainMenu/MainMenu.tscn"
 	super._ready()
-	
+	SoundManager.play_music("winner")
+
 	if SelectionManager.winner_player_id > 0:
 		winner_label.text = "PLAYER " + str(SelectionManager.winner_player_id) + "\nWINS!"
 		if SelectionManager.winner_sprite:
